@@ -1,0 +1,86 @@
+----
+What is xconst?
+
+  xconstは、YAMLやXMLといったフォーマットで記述されたメタテキストから、
+  C/C++あるいは他の言語などの定数定義を含むソースファイルを出力するための
+  ユーティリティです。
+
+  たとえば、C/C++をホストとして、ゲストに何かしらのスクリプト言語を組み込み、
+  それらの間で同一の定義を用いたいといったケースを想定して作られています。
+
+----
+How to install.
+
+  まずPythonがインストールされていることを前提としています。
+  また、依存モジュールとして下記のものを使用していますので、まずこれらがインストール
+  されているかどうかをご確認ください。これらのインストールについては、それぞれの
+  インストールマニュアルをご確認ください。
+
+    LibYAML, PyYAML http://pyyaml.org/
+   
+  xconstのインストール自体はすごく簡単です。
+  まず、カレントディレクトリをxconstのアーカイブファイルを展開してできたディレクトリにします。
+  そして、コマンドプロンプト上で次のようにタイプします。（管理者権限で実行してください）
+
+    $ python setup.py install
+
+  setupスクリプトの実行が終了したら、プロンプト上で次のようにタイプしてみましょう。
+
+	  $ xconst
+    input file is not found: 
+
+  オプションが何も指定されていないため、こんな感じにエラーになってしまいますが、
+	これで一応インストールが成功したか確認できます。
+
+----
+How to use xconst.
+
+  こちらにオンライン版を準備してあります。
+  http://github.com/ykanda/xconst/wiki
+
+Options
+----
+  -h, --help
+
+    Print help.
+
+  -v, --version
+
+    Print version info.
+
+  -i [input_file_name]
+
+    入力ファイル名を指定するオプションです。
+    input_file_nameに入力ファイル名を記述します。
+
+  -o [output_file_name], --output_file [output_file_name]
+
+	  出力ファイル名を指定するオプションです。
+    input_file_nameに出力ファイル名を記述します。
+
+  --input_type [YAML, XML, JSON]
+
+	  入力するファイルのフォーマットを指定するオプションです。
+    output_file_typeにより、出力するファイルの種類を指定します。
+    次のようなものが指定できます。
+		（注：XMLおよびJSONは、今後の実装のために予定されているものであり、
+    現バージョンでは動作しない、無効なオプションになっています）
+
+    YAML 入力ファイルがYAMLフォーマットにより記述されている場合に指定します
+    XML  入力ファイルがXMLフォーマットにより記述されている場合に指定します
+    JSON 入力ファイルがJSONフォーマットにより記述されている場合に指定します
+
+  --output_type [output_file_type]
+
+    出力するファイルのフォーマットを指定するオプションです。
+    output_file_typeにより、出力するファイルの種類を指定します。 次のようなものが指定できます。
+
+    C   C言語 const形式で出力します。
+    CD  C言語 #define 形式で出力します。
+    CPP C++ static const 形式で出力します。
+    SQ  Squirrel形式で出力します。
+
+----
+LICENCE
+  
+	zlib/libpng licence. See LICENCE file.
