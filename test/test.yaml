@@ -1,0 +1,106 @@
+xconst_ver         : 0.0.1                    # xconstのバージョン指定、現状無視される (required)
+xconst_author_name : Yasuhiro Kanda           # このファイルの作成者 (optional)
+xconst_author_mail : yasuhiro.kanda@gmail.com # このファイルの作成者のメールアドレス (optional)
+
+
+# 定義本体
+xconst_declaration:
+  # 文字列の要素定義
+  - name:  FOO
+    type:  string
+    value: foo
+  # 整数の要素定義
+  - name:  BAR
+    type:  integer
+    value: 1
+  # 不動小数点数の要素定義
+  - name:  BAZ
+    type:  float
+    value: 1.0
+
+# application: kn-ap2
+# version: 1
+# api_version: 1
+# runtime: python
+# 
+# default_expiration: "1d"
+# 
+# handlers:
+# - url: /swf
+#   static_dir: assets/swf
+#   secure: optional
+# 
+# - url: /css
+#   static_dir: assets/css
+#   secure: optional
+# 
+# - url: /js
+#   static_dir: assets/js
+#   secure: optional
+# 
+# - url: /img
+#   static_dir: assets/img
+#   secure: optional
+# 
+# - url: /crossdomain.xml
+#   static_files: assets/crossdomain.xml
+#   upload: assets/crossdomain.xml
+#   secure: optional
+# 
+# - url: /favicon.ico
+#   static_files: favicon.ico
+#   upload: favicon.ico
+#   secure: optional
+# 
+# - url: /cron/.*
+#   script: main.py
+#   login: admin
+#   secure: optional
+# 
+# - url: /oid/.*
+#   script: main.py
+#   secure: optional
+# 
+# - url: /contact/.*
+#   script: main.py
+#   secure: always
+# 
+# - url: /form/.*
+#   script: main.py
+#   secure: optional
+# 
+# - url: /task/.*
+#   script: main.py
+#   secure: optional
+#   
+# - url: /livemail/.*
+#   script: main.py
+#   secure: optional
+#   
+# - url: /zip2address/.*
+#   script: main.py
+#   secure: optional
+#     
+# - url: /logout
+#   script: main.py
+#   secure: optional
+#   
+# - url: /remote_api
+#   script: $PYTHON_LIB/google/appengine/ext/remote_api/handler.py
+#   login: admin
+#   
+# - url: /
+#   script: main.py
+#   
+# - url: /.*/(ref|demo|preview).*
+#   script: main.py
+#   
+# - url: /estatebp/.*
+#   script: main.py
+#   login: required
+#   secure: always
+#   
+# - url: .*
+#   script: main.py
+#   login: admin
+#   secure: always

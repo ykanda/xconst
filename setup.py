@@ -5,6 +5,7 @@ setup (name='xconst',
 	description='Constant symbol generator by meta format description',
 	author='Yasuhiro Kanda',
 	author_email='yasuhiro.kanda@gmail.com',
-	packages=['xconst'],
-	scripts=['xconst/xconst']
+#	packages=['xconst'],
+#	package_dir={'xconst':'package'},
+	scripts=['scripts/xconst']
 	)

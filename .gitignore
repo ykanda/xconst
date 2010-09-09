@@ -1,6 +1,7 @@
+# test
+./test/test.h
 
 
-
-# for Python Distutils
+# Python Distutils
 ./buid
 ./dist

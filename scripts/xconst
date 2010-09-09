@@ -1,0 +1,213 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+
+#------------------------------------------------------------------------------
+
+import sys
+import os.path
+import getopt
+import yaml
+
+
+#------------------------------------------------------------------------------
+
+
+class XConstApp :
+
+	name    = "xconst"
+	version = "0.0.1"
+	author  = ["Yasuhiro Kanda"]
+
+	def usage (self) :
+		print self.name
+		print self.version
+		print self.author
+		print """
+	USAGE
+			
+	OPTIONS
+	 -h, --h
+	 -v, --version
+	 -i, --input
+	 -o, --output
+		"""
+
+
+#------------------------------------------------------------------------------
+
+class XConstDesc:
+	xconst_desc_verbose = False
+	xconst_desc_in_file = None
+	xconst_desc_ex_file = None
+	xconst_desc_extype  = ''
+	xconst_desc_intype  = ''
+
+
+class XConst:
+	"""
+	class XConst
+	xconstツールのメイン実装クラスです。
+	"""
+	def do (self, desc):
+		"""
+		xconstツールのメイン実装処理を行います。
+		必要なパラメタはすべてXConstDescクラスのインスタンスであるdescを経由して行われます。
+		"""
+		if desc.xconst_desc_intype in ('yaml', 'YAML', 'yml', 'YML') :
+			data = yaml.load (desc.xconst_desc_in_file)
+		else :
+			print "input filetype is invalid."
+			return
+
+
+		# ファイル情報を表示
+		# 出力ファイルに表示しても良いかもしれない
+		if desc.xconst_desc_verbose == True :
+			print "xconst_version     [%s]" % (data['xconst_ver'])
+			print "xconst_author_name [%s]" % (data['xconst_author_name'])
+			print "xconst_author_mail [%s]" % (data['xconst_author_mail'])
+
+
+		# ファイルの中身を表示
+		for dec in data['xconst_declaration'] :
+			v = ""
+			# C言語のソースとして出力してみる(const)
+			if desc.xconst_desc_extype in ('c', 'C') :
+				if   dec['type'] == "string" :
+					v = 'const char* %s = "%s";\n' % (dec['name'], dec['value'])
+
+				elif dec['type'] == "integer" :
+					v = 'const int %s = %s;\n' % (dec['name'], dec['value'])
+
+				elif dec['type'] == "float" :
+					v = 'const float %s = %s;\n' % (dec['name'], dec['value'])
+
+			# C言語のソースとして出力してみる(define)
+			elif desc.xconst_desc_extype in ('cd','CD') :
+				if   dec['type'] == "string" :
+					v = '#define %s "%s"\n' % (dec['name'], dec['value'])
+
+				elif dec['type'] == "integer" :
+					v = '#define %s %s\n' % (dec['name'], dec['value'])
+
+				elif dec['type'] == "float" :
+					v = '#define %s %s\n' % (dec['name'], dec['value'])
+
+			# C++のソースとして出力してみる
+			elif desc.xconst_desc_extype in ('cpp', 'CPP') :
+				if   dec['type'] == "string" :
+					v = 'static const char* %s = "%s";\n' % (dec['name'], dec['value'])
+
+				elif dec['type'] == "integer" :
+					v = 'static const int %s = %s;\n' % (dec['name'], dec['value'])
+
+				elif dec['type'] == "float" :
+					v = 'static const float %s = %s;\n' % (dec['name'], dec['value'])
+
+			# Squirrelのソースとして出力してみる
+			# Squirrelはリテラルの構文によって型が決められるので、タイプ指定されたものがちゃんと目的の型のリテラル構文になっているかどうかチェックする必要あり。
+			elif desc.xconst_desc_extype in ('sq', 'SQ') :
+				if   dec['type'] == "string" :
+					v = 'const %s = "%s";\n' % (dec['name'], dec['value'])
+
+				elif dec['type'] == "integer" :
+					v = 'const %s = %s;\n' % (dec['name'], dec['value'])
+
+				elif dec['type'] == "float" :
+					v = 'const %s = %s;\n' % (dec['name'], dec['value'])
+
+
+			# ファイルに1行出力
+			desc.xconst_desc_ex_file.write (v)
+
+#------------------------------------------------------------------------------
+
+# /*{{{*/
+def main () :
+
+	# 引数パース処理
+	try :
+		optlist, args = getopt.getopt (sys.argv[1:], "hvi:o:", longopts=["help", "version", "input_file=", "output_file=", "input_type=", "output_type="])
+
+	except getopt . GetoptError :
+		usage ()
+		sys.exit (1)
+	
+	
+	# 入力ファイル、出力ファイルを受け取る変数
+	in_file_path = ""
+	in_file_type = ""
+	ex_file_path = ""
+	ex_file_type = ""
+
+	for opt, arg in optlist :
+		if opt in ("-h", "--help") :
+			XConstApp.usage ()
+			sys.exit (0)
+
+		if opt in ("-v", "--version") :
+			print "xconst, version " + XConstApp.version
+			sys.exit (0)
+
+
+		# 入力ファイル名を受け取る
+		if opt in ("-i", "--input_file") :
+			in_file_path = arg
+		
+		# 出力ファイル名を受け取る
+		if opt in ("-o", "--output_file") :
+			ex_file_path = arg
+
+		# 入力ファイルタイプ
+		if opt in ("--input_type") : 
+			in_file_type = arg
+			print in_file_type
+
+		# 出力ファイルタイプ
+		if opt in ("--output_type") : 
+			ex_file_type = arg
+			print ex_file_type
+
+
+	# 入力ファイルを開く
+	if os.path.exists (in_file_path) == False :
+		print "input file is not found: %s" % (in_file_path)
+		sys.exit (1)
+	in_file = open (in_file_path)
+
+
+	# 出力ファイルを開く
+	if os.path.exists (ex_file_path) == True : 
+		print "output file is exists: %s" % (ex_file_path)
+	ex_file = open (ex_file_path, "w")
+
+
+	# xconst実行
+	D = XConstDesc ()
+	X = XConst     ()
+	D.xconst_desc_in_file = in_file.read ().decode ("utf-8")
+	D.xconst_desc_ex_file = ex_file
+	D.xconst_desc_intype  = in_file_type
+	D.xconst_desc_extype  = ex_file_type
+
+
+	# TODO 引数オブジェクトのチェック処理の呼び出しを行う
+	X.do (D)
+
+
+	# 出力ファイルを閉じる
+	# 入力ファイルを閉じる
+	in_file.close ()
+	ex_file.close ()
+
+# /*}}}*/
+
+#------------------------------------------------------------------------------
+
+if __name__ == '__main__' :
+	main ()
+	exit (0)
+
+#------------------------------------------------------------------------------
+# for vim modeline
+# vim: set filetype=python :
