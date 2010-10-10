@@ -26,11 +26,11 @@ How to install.
 
   setupスクリプトの実行が終了したら、プロンプト上で次のようにタイプしてみましょう。
 
-	  $ xconst
+    $ xconst
     input file is not found: 
 
   オプションが何も指定されていないため、こんな感じにエラーになってしまいますが、
-	これで一応インストールが成功したか確認できます。
+  これで一応インストールが成功したか確認できます。
 
 ----
 How to use xconst.
@@ -55,15 +55,15 @@ Options
 
   -o [output_file_name], --output_file [output_file_name]
 
-	  出力ファイル名を指定するオプションです。
+    出力ファイル名を指定するオプションです。
     input_file_nameに出力ファイル名を記述します。
 
   --input_type [YAML, XML, JSON]
 
-	  入力するファイルのフォーマットを指定するオプションです。
+    入力するファイルのフォーマットを指定するオプションです。
     output_file_typeにより、出力するファイルの種類を指定します。
     次のようなものが指定できます。
-		（注：XMLおよびJSONは、今後の実装のために予定されているものであり、
+   （注：XMLおよびJSONは、今後の実装のために予定されているものであり、
     現バージョンでは動作しない、無効なオプションになっています）
 
     YAML 入力ファイルがYAMLフォーマットにより記述されている場合に指定します
@@ -82,5 +82,5 @@ Options
 
 ----
 LICENCE
-  
-	zlib/libpng licence. See LICENCE file.
+
+  zlib/libpng licence. See LICENCE file.
